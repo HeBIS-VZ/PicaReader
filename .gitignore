@@ -9,3 +9,4 @@ build
 composer.phar
 composer.lock
 test.php
+.idea

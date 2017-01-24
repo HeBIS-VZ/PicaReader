@@ -38,10 +38,12 @@ class PicaPlainParser implements PicaPlainParserInterface
     {
         $field = array('subfields' => array());
         $match = array();
-        if (preg_match('#^([012][0-9]{2}[A-Z@])(/([0-9]{2}))? (\$.*)$#Du', $line, $match)) {
+        if (preg_match('#^([012][0-9]{2}[A-Z@])(/([0-9]{2}))?(\s*)(\$.*)$#Du', $line, $match)) {
             $field = array('tag' => $match[1],
-                           'occurrence' => $match[3] ?: null,
-                           'subfields' => $this->parseSubfields($match[4]));;
+                'occurrence' => $match[3] ?: null,
+                'subfields' => $this->parseSubfields($match[5]));;
+        } else if (preg_match("/^[a-z]{3}\:\s[\d]+.*/", $line)) {
+            return false;
         } else {
             throw new RuntimeException("Invalid characters in PicaPlain record at line: {$line}");
         }
@@ -58,12 +60,17 @@ class PicaPlainParser implements PicaPlainParserInterface
         do {
             switch ($state) {
                 case '$':
-                    if (is_array($subfield)) {
-                        $subfields []= $subfield;
-                        $subfield = array();
+                    if (preg_match('/^[a-z0-9#]$/Di', $str[$pos+1])) { //valid subfield code?
+                        ++$pos;
+                        $state = 'code';
+                        if (is_array($subfield)) {
+                            $subfields []= $subfield;
+                            $subfield = array();
+                        }
+                    } else { //otherwise set state to value
+                        $state = 'value';
+                        ++$pos;
                     }
-                    $pos += 1;
-                    $state = 'code';
                     break;
                 case 'code':
                     $subfield['code'] = $str[$pos];

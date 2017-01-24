@@ -35,7 +35,7 @@ class PicaPlainReader extends Reader
     /**
      * Current input data.
      *
-     * @var string
+     * @var array
      */
     protected $_data;
 
@@ -50,7 +50,6 @@ class PicaPlainReader extends Reader
      * Constructor.
      *
      * @param  PicaPlainParserInterface $parser Optional parser instance
-     * @return void
      */
     public function __construct (PicaPlainParserInterface $parser = null)
     {
@@ -60,7 +59,7 @@ class PicaPlainReader extends Reader
     /**
      * Open the reader with input stream.
      *
-     * @param  resource|string $stream
+     * @param  resource|string $data
      * @return void
      */
     public function open ($data)
@@ -78,7 +77,10 @@ class PicaPlainReader extends Reader
             $record = array('fields' => array());
             do {
                 $line = current($this->_data);
-                $record['fields'] []= $this->_parser->parseField($line);
+                $field = $this->_parser->parseField($line);
+                if ($field !== false) {
+                    $record['fields'] []= $field;
+                }
             } while (next($this->_data));
             next($this->_data);
         }
