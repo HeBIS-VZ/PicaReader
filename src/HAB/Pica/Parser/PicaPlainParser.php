@@ -84,7 +84,9 @@ class PicaPlainParser implements PicaPlainParserInterface
                         $subfield['value'] .= substr($str, $pos);
                         $pos = $max;
                     } else {
-                        $subfield['value'] .= substr($str, $pos, ($next - $pos));
+                        if (!empty($subfield) && array_key_exists('code', $subfield)) {
+                            $subfield['value'] .= substr($str, $pos, ($next - $pos));
+                        }
                         $pos = $next;
                         if (isset($str[$pos + 1]) && $str[$pos + 1] === '$') {
                             $subfield['value'] .= '$';
