@@ -84,6 +84,7 @@ class PicaPlainParser implements PicaPlainParserInterface
                         $subfield['value'] .= substr($str, $pos);
                         $pos = $max;
                     } else {
+                        //ignore value if any valid subfield doesn't exist
                         if (!empty($subfield) && array_key_exists('code', $subfield)) {
                             $subfield['value'] .= substr($str, $pos, ($next - $pos));
                         }
