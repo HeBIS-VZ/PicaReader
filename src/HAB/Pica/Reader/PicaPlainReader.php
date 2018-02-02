@@ -75,14 +75,20 @@ class PicaPlainReader extends Reader
         $record = false;
         if (current($this->_data) !== false) {
             $record = array('fields' => array());
-            do {
-                $line = current($this->_data);
+            for ($i = 0; $i < count($this->_data); ++$i) {
+                $line = $this->_data[$i];
+                if (empty($line)) {
+                    continue;
+                }
+                //adapted to output à la shwdb cg 20180202
+                if (preg_match('#^lok\:\s[0-9]+\s([0-9]+)#Du', $line, $match)) {
+                    $line = '101@/00 $a' . $match[1];
+                }
                 $field = $this->_parser->parseField($line);
                 if ($field !== false) {
                     $record['fields'] []= $field;
                 }
-            } while (next($this->_data));
-            next($this->_data);
+            }
         }
         return $record;
     }
