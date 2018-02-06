@@ -1,5 +1,5 @@
 {
-    "name": "hab/picareader",
+    "name": "hebis/picareader",
     "description": "Classes for reading Pica+ records encoded in Pica, PicaXML and PicaPlain",
     "type": "library",
     "license": "GPL-3.0-or-later",
