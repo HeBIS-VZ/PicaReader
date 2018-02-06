@@ -1,8 +1,8 @@
 {
-    "name": "hebis/picareader",
+    "name": "hab/picareader",
     "description": "Classes for reading Pica+ records encoded in Pica, PicaXML and PicaPlain",
     "type": "library",
-    "license": "GPL-3.0+",
+    "license": "GPL-3.0-or-later",
     "authors": [
 	{
 	    "name": "David Maus",
